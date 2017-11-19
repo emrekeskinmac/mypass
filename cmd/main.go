@@ -1,11 +1,11 @@
 package main
 
 import (
-	"log"
+	"bufio"
+	"fmt"
 	"os"
+	"strings"
 
-	"github.com/emrekeskinmac/mypass"
-	"github.com/emrekeskinmac/mypass/account"
 	"github.com/emrekeskinmac/mypass/providers/local"
 )
 
@@ -32,40 +32,59 @@ import (
 //
 // $ mypass delete [facebook]
 // Deleted: emremac - 123
+var (
+	Username string
+	Password string
+	PV       *local.LocalProvider
+)
+
 func main() {
 
-	Args := os.Args[1]
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Login Password: ")
 
-	var (
-		Username string
-		Password string
-		PV       *local.LocalProvider
-	)
-
-	if Args == "login" {
-		Username := os.Args[2]
-		Password := os.Args[3]
-		dbPath := "/tmp/mypass.db"
-
-		PV, err := local.New(Username, Password, dbPath)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-	} else if Args == "save" {
-		SaveUsername := os.Args[2]
-		SavePass := os.Args[3]
-		mp := mypass.New(Username, Password, PV)
-		err2 := mp.Save(account.Account{
-			Type:     account.Password,
-			Name:     "uie",
-			Username: SaveUsername,
-			Password: SavePass,
-		})
-		if err2 != nil {
-			log.Fatal(err2)
-		}
+	text, _ := reader.ReadString('\n')
+	if strings.TrimSpace(text) == "123" {
+		fmt.Print("Get Account: ")
+		text2, _ := reader.ReadString('\n')
+		fmt.Println(text2)
+	} else {
+		fmt.Print("Wrong Password")
 	}
+
+	/*
+		Args := os.Args[1]
+
+		var (
+			Username string
+			Password string
+			PV       *local.LocalProvider
+		)
+
+		if Args == "login" {
+			Username := os.Args[2]
+			Password := os.Args[3]
+			dbPath := "/tmp/mypass.db"
+
+			PV, err := local.New(Username, Password, dbPath)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+		} else if Args == "save" {
+			SaveUsername := os.Args[2]
+			SavePass := os.Args[3]
+			mp := mypass.New(Username, Password, PV)
+			err2 := mp.Save(account.Account{
+				Type:     account.Password,
+				Name:     "uie",
+				Username: SaveUsername,
+				Password: SavePass,
+			})
+			if err2 != nil {
+				log.Fatal(err2)
+			}
+		} */
 
 	/*
 
